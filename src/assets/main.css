@@ -11,10 +11,10 @@
   --color-bg-surface: #131310;
   --color-gold: #c9a84c;
   --color-gold-light: #e8c76a;
-  --color-gold-dim: #7a6530;
+  --color-gold-dim: #a08840;
   --color-cream: #f0ead6;
-  --color-cream-muted: #7a7060;
-  --color-border: #222018;
+  --color-cream-muted: #a09585;
+  --color-border: #2e2b20;
   --color-error: #c05050;
   --font-display: 'Playfair Display', Georgia, serif;
   --font-mono: 'DM Mono', 'Courier New', monospace;
@@ -66,6 +66,10 @@
 }
 
 @layer base {
+  html {
+    font-size: 24px;
+  }
+
   body {
     background-color: var(--color-bg);
     color: var(--color-cream);
