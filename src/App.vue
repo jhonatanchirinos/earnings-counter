@@ -1,13 +1,16 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import { useSalaryStore } from '@/stores/salary'
+import { useCurrencyStore } from '@/stores/currency'
 import EarningsDisplay from '@/components/EarningsDisplay.vue'
 import SalaryInput from '@/components/SalaryInput.vue'
 
 const salaryStore = useSalaryStore()
+const currencyStore = useCurrencyStore()
 
 onMounted(() => {
   salaryStore.loadFromStorage()
+  currencyStore.loadFromStorage()
 })
 </script>
 

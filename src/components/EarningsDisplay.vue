@@ -2,10 +2,14 @@
 import { computed, onUnmounted, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSalaryStore } from '@/stores/salary'
+import { useCurrencyStore } from '@/stores/currency'
 import { useEarningsCounter } from '@/composables/useEarningsCounter'
 
 const salaryStore = useSalaryStore()
 const { monthlySalary } = storeToRefs(salaryStore)
+
+const currencyStore = useCurrencyStore()
+const { selectedCurrency } = storeToRefs(currencyStore)
 
 const { earnings, salaryPerSecond, daysInMonth } = useEarningsCounter(monthlySalary)
 
@@ -28,7 +32,9 @@ onUnmounted(() => {
   if (pulseTimeoutId !== null) clearTimeout(pulseTimeoutId)
 })
 
-const integerPart = computed(() => Math.floor(earnings.value).toLocaleString('en-US'))
+const integerPart = computed(() =>
+  Math.floor(earnings.value).toLocaleString(selectedCurrency.value.locale),
+)
 
 const decimalPart = computed(() => {
   const fractionalPart = earnings.value % 1
@@ -66,7 +72,7 @@ const hasSalary = computed(() => monthlySalary.value !== null && monthlySalary.v
       >
         <span
           class="pt-2 font-normal font-display text-[1.2rem] leading-none text-gold-dim sm:pt-3 sm:text-[1.8rem] lg:pt-5 lg:text-[2.5rem]"
-          >$</span
+          >{{ selectedCurrency.symbol }}</span
         >
         <div class="flex items-baseline">
           <span
@@ -93,7 +99,7 @@ const hasSalary = computed(() => monthlySalary.value !== null && monthlySalary.v
       >
         <div class="flex flex-col gap-1.5">
           <span class="font-mono text-base tabular-nums tracking-[-0.01em] text-cream">
-            +${{ perSecondFormatted }}
+            +{{ selectedCurrency.symbol }}{{ perSecondFormatted }}
           </span>
           <span class="text-[0.58rem] uppercase tracking-[0.22em] text-cream-muted"
             >per second</span

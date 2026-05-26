@@ -1,8 +1,17 @@
 <script setup lang="ts">
 import { ref, computed, nextTick } from 'vue'
+import { storeToRefs } from 'pinia'
 import { useSalaryStore } from '@/stores/salary'
+import { useCurrencyStore, CURRENCIES } from '@/stores/currency'
 
 const salaryStore = useSalaryStore()
+
+const currencyStore = useCurrencyStore()
+const { selectedCurrency } = storeToRefs(currencyStore)
+
+function handleCurrencyChange(event: Event): void {
+  currencyStore.setCurrency((event.target as HTMLSelectElement).value)
+}
 
 const inputRef = ref<HTMLInputElement | null>(null)
 const inputValue = ref('')
@@ -48,7 +57,7 @@ function handleKeydown(keyboardEvent: KeyboardEvent): void {
 const formattedSalary = computed(() => {
   if (!salaryStore.monthlySalary) return ''
 
-  const formattedAmount = salaryStore.monthlySalary.toLocaleString('en-US', {
+  const formattedAmount = salaryStore.monthlySalary.toLocaleString(selectedCurrency.value.locale, {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   })
@@ -62,13 +71,29 @@ const formattedSalary = computed(() => {
     <div v-if="showForm" class="mx-auto max-w-[460px]">
       <div class="mb-3 flex items-center justify-between">
         <span class="text-[0.58rem] tracking-[0.32em] text-cream-muted">MONTHLY SALARY</span>
-        <button
-          v-if="isEditing"
-          class="text-[0.58rem] tracking-[0.2em] text-cream-muted transition-colors hover:text-cream"
-          @click="isEditing = false"
-        >
-          CANCEL
-        </button>
+        <div class="flex items-center gap-3">
+          <select
+            class="cursor-pointer bg-transparent font-mono text-[0.58rem] tracking-[0.2em] text-cream-muted transition-colors hover:text-cream focus:outline-none"
+            :value="selectedCurrency.code"
+            @change="handleCurrencyChange"
+          >
+            <option
+              v-for="currency in CURRENCIES"
+              :key="currency.code"
+              :value="currency.code"
+              class="bg-bg-surface text-cream"
+            >
+              {{ currency.code }}
+            </option>
+          </select>
+          <button
+            v-if="isEditing"
+            class="text-[0.58rem] tracking-[0.2em] text-cream-muted transition-colors hover:text-cream"
+            @click="isEditing = false"
+          >
+            CANCEL
+          </button>
+        </div>
       </div>
 
       <div
@@ -77,7 +102,7 @@ const formattedSalary = computed(() => {
         <span
           class="flex select-none items-center border-r border-border px-3 py-3.5 font-mono text-[0.9rem] text-gold-dim sm:px-4"
         >
-          $
+          {{ selectedCurrency.symbol }}
         </span>
         <input
           ref="inputRef"
@@ -106,7 +131,9 @@ const formattedSalary = computed(() => {
       <span class="w-full shrink-0 text-[0.58rem] tracking-[0.32em] text-cream-muted sm:w-auto"
         >MONTHLY SALARY</span
       >
-      <span class="flex-1 font-mono text-base tabular-nums text-cream">${{ formattedSalary }}</span>
+      <span class="flex-1 font-mono text-base tabular-nums text-cream"
+        >{{ selectedCurrency.symbol }}{{ formattedSalary }}</span
+      >
       <button
         class="shrink-0 border border-border px-3 py-1.5 font-mono text-[0.58rem] tracking-[0.22em] text-cream-muted transition-colors hover:border-gold-dim hover:text-gold"
         @click="startEdit"
