@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, nextTick } from 'vue'
+import { ref, computed, nextTick, onMounted, onUnmounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSalaryStore } from '@/stores/salary'
 import { useCurrencyStore, CURRENCIES } from '@/stores/currency'
@@ -9,9 +9,31 @@ const salaryStore = useSalaryStore()
 const currencyStore = useCurrencyStore()
 const { selectedCurrency } = storeToRefs(currencyStore)
 
-function handleCurrencyChange(event: Event): void {
-  currencyStore.setCurrency((event.target as HTMLSelectElement).value)
+const currencyDropdownRef = ref<HTMLDivElement | null>(null)
+const isCurrencyDropdownOpen = ref(false)
+
+function toggleCurrencyDropdown(): void {
+  isCurrencyDropdownOpen.value = !isCurrencyDropdownOpen.value
 }
+
+function selectCurrency(code: string): void {
+  currencyStore.setCurrency(code)
+  isCurrencyDropdownOpen.value = false
+}
+
+function handleClickOutside(mouseEvent: MouseEvent): void {
+  if (currencyDropdownRef.value && !currencyDropdownRef.value.contains(mouseEvent.target as Node)) {
+    isCurrencyDropdownOpen.value = false
+  }
+}
+
+onMounted(() => {
+  document.addEventListener('click', handleClickOutside)
+})
+
+onUnmounted(() => {
+  document.removeEventListener('click', handleClickOutside)
+})
 
 const inputRef = ref<HTMLInputElement | null>(null)
 const inputValue = ref('')
@@ -72,20 +94,33 @@ const formattedSalary = computed(() => {
       <div class="mb-3 flex items-center justify-between">
         <span class="text-[0.58rem] tracking-[0.32em] text-cream-muted">MONTHLY SALARY</span>
         <div class="flex items-center gap-3">
-          <select
-            class="cursor-pointer bg-transparent font-mono text-[0.58rem] tracking-[0.2em] text-cream-muted transition-colors hover:text-cream focus:outline-none"
-            :value="selectedCurrency.code"
-            @change="handleCurrencyChange"
-          >
-            <option
-              v-for="currency in CURRENCIES"
-              :key="currency.code"
-              :value="currency.code"
-              class="bg-bg-surface text-cream"
+          <div ref="currencyDropdownRef" class="relative">
+            <button
+              class="flex cursor-pointer items-center gap-1 font-mono text-[0.58rem] tracking-[0.2em] text-cream-muted transition-colors hover:text-cream focus:outline-none"
+              @click="toggleCurrencyDropdown"
             >
-              {{ currency.code }}
-            </option>
-          </select>
+              {{ selectedCurrency.code }}
+              <span class="text-[0.45rem] opacity-50">▼</span>
+            </button>
+            <div
+              v-if="isCurrencyDropdownOpen"
+              class="absolute right-0 bottom-full mb-1.5 border border-border bg-bg-surface"
+            >
+              <button
+                v-for="currency in CURRENCIES"
+                :key="currency.code"
+                class="block w-full px-3 py-1.5 text-left font-mono text-[0.58rem] tracking-[0.2em] transition-colors"
+                :class="
+                  currency.code === selectedCurrency.code
+                    ? 'bg-gold text-bg'
+                    : 'text-cream-muted hover:bg-gold hover:text-bg'
+                "
+                @click="selectCurrency(currency.code)"
+              >
+                {{ currency.code }}
+              </button>
+            </div>
+          </div>
           <button
             v-if="isEditing"
             class="text-[0.58rem] tracking-[0.2em] text-cream-muted transition-colors hover:text-cream"
@@ -127,7 +162,10 @@ const formattedSalary = computed(() => {
       </p>
     </div>
 
-    <div v-else class="mx-auto flex max-w-[460px] flex-wrap items-center gap-x-5 gap-y-2">
+    <div
+      v-else
+      class="mx-auto flex max-w-[460px] flex-wrap items-center gap-x-5 gap-y-2 sm:flex-nowrap"
+    >
       <span class="w-full shrink-0 text-[0.58rem] tracking-[0.32em] text-cream-muted sm:w-auto"
         >MONTHLY SALARY</span
       >
