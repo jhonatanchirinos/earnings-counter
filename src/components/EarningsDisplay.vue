@@ -67,21 +67,21 @@ const hasSalary = computed(() => monthlySalary.value !== null && monthlySalary.v
 
     <template v-else>
       <div
-        class="mb-2 inline-flex items-start gap-1 transition-opacity duration-200 sm:mb-4 lg:mb-5"
+        class="mb-2 flex flex-wrap justify-center items-start gap-1 transition-opacity duration-200 sm:mb-4 lg:mb-5"
         :class="{ 'opacity-70': isPulsing }"
       >
         <span
           class="pt-2 font-normal font-display text-[1.2rem] leading-none text-gold-dim sm:pt-3 sm:text-[1.8rem] lg:pt-5 lg:text-[2.5rem]"
           >{{ selectedCurrency.symbol }}</span
         >
-        <div class="flex items-baseline">
+        <div class="flex flex-wrap justify-center items-baseline min-w-0">
           <span
-            class="font-bold font-display text-[3rem] leading-[0.88] tabular-nums tracking-[-0.03em] text-gold sm:text-[5rem] lg:text-[7.5rem]"
+            class="font-bold font-display text-[3rem] leading-[0.88] tabular-nums tracking-[-0.03em] text-gold break-all sm:text-[5rem] lg:text-[7.5rem]"
           >
             {{ integerPart }}
           </span>
           <span
-            class="self-end pb-1 font-mono text-[1rem] tabular-nums tracking-[-0.01em] text-gold-dim sm:pb-2 sm:text-[1.6rem] lg:pb-2.5 lg:text-[2rem]"
+            class="self-end pb-1 font-mono text-[1rem] tabular-nums tracking-[-0.01em] text-gold-dim break-all sm:pb-2 sm:text-[1.6rem] lg:pb-2.5 lg:text-[2rem]"
           >
             {{ decimalPart }}
           </span>

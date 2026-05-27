@@ -16,7 +16,7 @@ onMounted(() => {
 
 <template>
   <div
-    class="relative grid min-h-screen grid-rows-[auto_1fr_auto] overflow-hidden px-12 py-8 max-sm:px-5 max-sm:py-6"
+    class="relative mx-auto grid min-h-screen w-full max-w-4xl grid-rows-[auto_1fr_auto] overflow-hidden px-12 py-8 max-sm:px-5 max-sm:py-6"
   >
     <div
       class="grain-bg fixed inset-0 z-0 pointer-events-none opacity-[0.035]"
@@ -24,7 +24,7 @@ onMounted(() => {
     />
 
     <header class="relative z-10 animate-slide-down">
-      <div class="flex flex-col gap-4">
+      <div class="flex flex-col items-center gap-4">
         <div class="flex items-center gap-3">
           <span class="font-mono text-[0.68rem] font-medium tracking-[0.35em] text-gold"
             >EARNINGS</span

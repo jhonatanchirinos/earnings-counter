@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, nextTick, onMounted, onUnmounted } from 'vue'
+import { ref, computed, watch, nextTick, onMounted, onUnmounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSalaryStore } from '@/stores/salary'
 import { useCurrencyStore, CURRENCIES } from '@/stores/currency'
@@ -56,6 +56,16 @@ async function startEdit(): Promise<void> {
   inputRef.value?.focus()
 }
 
+const MAX_SALARY = 1_000_000_000
+
+watch(inputValue, (newInputValue, oldInputValue) => {
+  const parsed = parseFloat(newInputValue)
+
+  if (!isNaN(parsed) && parsed > MAX_SALARY) {
+    inputValue.value = oldInputValue || ''
+  }
+})
+
 function handleSubmit(): void {
   const value = parseFloat(inputValue.value)
   if (isNaN(value) || value <= 0) {
@@ -109,7 +119,7 @@ const formattedSalary = computed(() => {
               <button
                 v-for="currency in CURRENCIES"
                 :key="currency.code"
-                class="block w-full px-3 py-1.5 text-left font-mono text-[0.58rem] tracking-[0.2em] transition-colors"
+                class="block w-full px-3 py-1.5 text-left font-mono text-[0.58rem] tracking-[0.2em] transition-colors cursor-pointer"
                 :class="
                   currency.code === selectedCurrency.code
                     ? 'bg-gold text-bg'
@@ -123,7 +133,7 @@ const formattedSalary = computed(() => {
           </div>
           <button
             v-if="isEditing"
-            class="text-[0.58rem] tracking-[0.2em] text-cream-muted transition-colors hover:text-cream"
+            class="text-[0.58rem] tracking-[0.2em] text-cream-muted transition-colors hover:text-cream cursor-pointer"
             @click="isEditing = false"
           >
             CANCEL
@@ -144,13 +154,14 @@ const formattedSalary = computed(() => {
           v-model="inputValue"
           type="number"
           min="0"
+          max="1000000000"
           step="0.01"
           placeholder="0.00"
-          class="min-w-0 flex-1 px-3 py-3.5 font-mono text-base tabular-nums text-cream placeholder:text-cream-muted placeholder:opacity-40 sm:px-4 sm:text-xl"
+          class="w-[calc(15ch+1.5rem)] px-3 py-3.5 font-mono text-base tabular-nums text-cream placeholder:text-cream-muted placeholder:opacity-40 sm:w-[calc(15ch+2rem)] sm:px-4 sm:text-xl"
           @keydown="handleKeydown"
         />
         <button
-          class="shrink-0 whitespace-nowrap bg-gold px-3 py-3.5 font-medium font-mono text-[0.6rem] tracking-[0.15em] text-bg transition-colors hover:bg-gold-light sm:px-4 sm:tracking-[0.28em]"
+          class="flex-1 whitespace-nowrap bg-gold px-3 py-3.5 font-medium font-mono text-[0.6rem] tracking-[0.15em] text-bg transition-colors hover:bg-gold-light sm:px-4 sm:tracking-[0.28em] cursor-pointer"
           @click="handleSubmit"
         >
           {{ isEditing ? 'UPDATE' : 'START' }}
@@ -162,18 +173,14 @@ const formattedSalary = computed(() => {
       </p>
     </div>
 
-    <div
-      v-else
-      class="mx-auto flex max-w-[460px] flex-wrap items-center gap-x-5 gap-y-2 sm:flex-nowrap"
-    >
-      <span class="w-full shrink-0 text-[0.58rem] tracking-[0.32em] text-cream-muted sm:w-auto"
-        >MONTHLY SALARY</span
-      >
-      <span class="flex-1 font-mono text-base tabular-nums text-cream"
+    <div v-else class="mx-auto flex max-w-[460px] flex-col items-center gap-3 sm:flex-row sm:gap-5">
+      <span class="shrink-0 text-[0.58rem] tracking-[0.32em] text-cream-muted">MONTHLY SALARY</span>
+      <span
+        class="flex-1 whitespace-nowrap text-center font-mono text-base tabular-nums text-cream sm:text-left"
         >{{ selectedCurrency.symbol }}{{ formattedSalary }}</span
       >
       <button
-        class="shrink-0 border border-border px-3 py-1.5 font-mono text-[0.58rem] tracking-[0.22em] text-cream-muted transition-colors hover:border-gold-dim hover:text-gold"
+        class="shrink-0 border border-border px-3 py-1.5 font-mono text-[0.58rem] tracking-[0.22em] text-cream-muted transition-colors hover:border-gold-dim hover:text-gold cursor-pointer"
         @click="startEdit"
       >
         EDIT
