@@ -2,15 +2,19 @@
 import { onMounted } from 'vue'
 import { useSalaryStore } from '@/stores/salary'
 import { useCurrencyStore } from '@/stores/currency'
+import { useScheduleStore } from '@/stores/schedule'
 import EarningsDisplay from '@/components/EarningsDisplay.vue'
 import SalaryInput from '@/components/SalaryInput.vue'
+import ScheduleSettings from '@/components/ScheduleSettings.vue'
 
 const salaryStore = useSalaryStore()
 const currencyStore = useCurrencyStore()
+const scheduleStore = useScheduleStore()
 
 onMounted(() => {
   salaryStore.loadFromStorage()
   currencyStore.loadFromStorage()
+  scheduleStore.loadFromStorage()
 })
 </script>
 
@@ -44,8 +48,11 @@ onMounted(() => {
       <EarningsDisplay />
     </main>
 
-    <footer class="relative z-10 pb-2 animate-slide-up [animation-delay:0.4s]">
+    <footer
+      class="relative z-10 w-full flex flex-col pb-4 sm:pb-8 animate-slide-up [animation-delay:0.4s]"
+    >
       <SalaryInput />
+      <ScheduleSettings />
     </footer>
   </div>
 </template>
