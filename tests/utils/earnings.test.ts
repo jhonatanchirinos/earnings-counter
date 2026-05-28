@@ -73,71 +73,99 @@ describe('getElapsedSecondsThisMonth', () => {
 
 describe('calculateEarnings', () => {
   it('returns 0 for zero salary', () => {
-    expect(calculateEarnings({ monthlySalary: 0, elapsedSeconds: 1000, daysInMonth: 30 })).toBe(0)
+    expect(
+      calculateEarnings({
+        monthlySalary: 0,
+        elapsedSeconds: 1000,
+        totalSecondsInMonth: 30 * 86400,
+      }),
+    ).toBe(0)
   })
 
   it('returns 0 for negative salary', () => {
-    expect(calculateEarnings({ monthlySalary: -500, elapsedSeconds: 1000, daysInMonth: 30 })).toBe(
-      0,
-    )
+    expect(
+      calculateEarnings({
+        monthlySalary: -500,
+        elapsedSeconds: 1000,
+        totalSecondsInMonth: 30 * 86400,
+      }),
+    ).toBe(0)
   })
 
   it('returns 0 for zero days', () => {
-    expect(calculateEarnings({ monthlySalary: 3000, elapsedSeconds: 1000, daysInMonth: 0 })).toBe(0)
+    expect(
+      calculateEarnings({ monthlySalary: 3000, elapsedSeconds: 1000, totalSecondsInMonth: 0 }),
+    ).toBe(0)
   })
 
   it('returns full salary at end of month', () => {
-    const days = 30
-    const totalSeconds = days * 86400
+    const totalSeconds = 30 * 86400
 
     expect(
-      calculateEarnings({ monthlySalary: 3000, elapsedSeconds: totalSeconds, daysInMonth: days }),
+      calculateEarnings({
+        monthlySalary: 3000,
+        elapsedSeconds: totalSeconds,
+        totalSecondsInMonth: totalSeconds,
+      }),
     ).toBeCloseTo(3000)
   })
 
   it('returns half salary at mid-month', () => {
-    const days = 30
-    const halfSeconds = (days * 86400) / 2
+    const totalSeconds = 30 * 86400
+    const halfSeconds = totalSeconds / 2
 
     expect(
-      calculateEarnings({ monthlySalary: 3000, elapsedSeconds: halfSeconds, daysInMonth: days }),
+      calculateEarnings({
+        monthlySalary: 3000,
+        elapsedSeconds: halfSeconds,
+        totalSecondsInMonth: totalSeconds,
+      }),
     ).toBeCloseTo(1500)
   })
 
   it('returns proportional daily amount', () => {
     const salary = 3000
-    const days = 30
+    const totalSeconds = 30 * 86400
 
     expect(
-      calculateEarnings({ monthlySalary: salary, elapsedSeconds: 86400, daysInMonth: days }),
-    ).toBeCloseTo(salary / days)
+      calculateEarnings({
+        monthlySalary: salary,
+        elapsedSeconds: 86400,
+        totalSecondsInMonth: totalSeconds,
+      }),
+    ).toBeCloseTo(salary / 30)
   })
 })
 
 describe('getSalaryPerSecond', () => {
   it('returns 0 for zero salary', () => {
-    expect(getSalaryPerSecond({ monthlySalary: 0, daysInMonth: 30 })).toBe(0)
+    expect(getSalaryPerSecond({ monthlySalary: 0, totalSecondsInMonth: 30 * 86400 })).toBe(0)
   })
 
   it('returns 0 for zero days', () => {
-    expect(getSalaryPerSecond({ monthlySalary: 3000, daysInMonth: 0 })).toBe(0)
+    expect(getSalaryPerSecond({ monthlySalary: 3000, totalSecondsInMonth: 0 })).toBe(0)
   })
 
   it('returns 0 for negative salary', () => {
-    expect(getSalaryPerSecond({ monthlySalary: -100, daysInMonth: 30 })).toBe(0)
+    expect(getSalaryPerSecond({ monthlySalary: -100, totalSecondsInMonth: 30 * 86400 })).toBe(0)
   })
 
   it('calculates correctly for 30-day month', () => {
     const expected = 3000 / (30 * 86400)
 
-    expect(getSalaryPerSecond({ monthlySalary: 3000, daysInMonth: 30 })).toBeCloseTo(expected)
+    expect(
+      getSalaryPerSecond({ monthlySalary: 3000, totalSecondsInMonth: 30 * 86400 }),
+    ).toBeCloseTo(expected)
   })
 
   it('salaryPerSecond * totalSeconds equals monthlySalary', () => {
-    const days = 31
+    const totalSeconds = 31 * 86400
     const salary = 5000
-    const perSecond = getSalaryPerSecond({ monthlySalary: salary, daysInMonth: days })
+    const perSecond = getSalaryPerSecond({
+      monthlySalary: salary,
+      totalSecondsInMonth: totalSeconds,
+    })
 
-    expect(perSecond * days * 86400).toBeCloseTo(salary)
+    expect(perSecond * totalSeconds).toBeCloseTo(salary)
   })
 })

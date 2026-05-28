@@ -2,10 +2,14 @@
 import { computed, onUnmounted, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSalaryStore } from '@/stores/salary'
+import { useCurrencyStore } from '@/stores/currency'
 import { useEarningsCounter } from '@/composables/useEarningsCounter'
 
 const salaryStore = useSalaryStore()
 const { monthlySalary } = storeToRefs(salaryStore)
+
+const currencyStore = useCurrencyStore()
+const { selectedCurrency } = storeToRefs(currencyStore)
 
 const { earnings, salaryPerSecond, daysInMonth } = useEarningsCounter(monthlySalary)
 
@@ -28,7 +32,9 @@ onUnmounted(() => {
   if (pulseTimeoutId !== null) clearTimeout(pulseTimeoutId)
 })
 
-const integerPart = computed(() => Math.floor(earnings.value).toLocaleString('en-US'))
+const integerPart = computed(() =>
+  Math.floor(earnings.value).toLocaleString(selectedCurrency.value.locale),
+)
 
 const decimalPart = computed(() => {
   const fractionalPart = earnings.value % 1
@@ -52,7 +58,7 @@ const hasSalary = computed(() => monthlySalary.value !== null && monthlySalary.v
 
 <template>
   <div class="w-full max-w-3xl py-4 text-center sm:py-8">
-    <div v-if="!hasSalary" class="flex flex-col items-center gap-8 py-8 sm:py-16">
+    <div v-if="!hasSalary" class="flex flex-col items-center gap-6 py-6 sm:py-12 lg:py-16">
       <p class="text-[0.8rem] uppercase tracking-[0.18em] text-cream-muted">
         Set your monthly salary below to start tracking
       </p>
@@ -61,37 +67,39 @@ const hasSalary = computed(() => monthlySalary.value !== null && monthlySalary.v
 
     <template v-else>
       <div
-        class="mb-3 inline-flex items-start gap-1 transition-opacity duration-200 sm:mb-5"
+        class="mb-2 flex flex-wrap justify-center items-start gap-1 transition-opacity duration-200 sm:mb-4 lg:mb-5"
         :class="{ 'opacity-70': isPulsing }"
       >
         <span
-          class="pt-3 font-normal font-display text-[1.5rem] leading-none text-gold-dim sm:pt-5 sm:text-[2.5rem]"
-          >$</span
+          class="pt-2 font-normal font-display text-[1.2rem] leading-none text-gold-dim sm:pt-3 sm:text-[1.8rem] lg:pt-5 lg:text-[2.5rem]"
+          >{{ selectedCurrency.symbol }}</span
         >
-        <div class="flex items-baseline">
+        <div class="flex flex-wrap justify-center items-baseline min-w-0">
           <span
-            class="font-bold font-display text-[3.5rem] leading-[0.88] tabular-nums tracking-[-0.03em] text-gold sm:text-[7.5rem]"
+            class="font-bold font-display text-[3rem] leading-[0.88] tabular-nums tracking-[-0.03em] text-gold break-all sm:text-[5rem] lg:text-[7.5rem]"
           >
             {{ integerPart }}
           </span>
           <span
-            class="self-end pb-1.5 font-mono text-[1.2rem] tabular-nums tracking-[-0.01em] text-gold-dim sm:pb-2.5 sm:text-[2rem]"
+            class="self-end pb-1 font-mono text-[1rem] tabular-nums tracking-[-0.01em] text-gold-dim break-all sm:pb-2 sm:text-[1.6rem] lg:pb-2.5 lg:text-[2rem]"
           >
             {{ decimalPart }}
           </span>
         </div>
       </div>
 
-      <p class="mb-6 text-[0.6rem] tracking-[0.35em] text-cream-muted sm:mb-10">
+      <p class="mb-4 text-[0.6rem] tracking-[0.35em] text-cream-muted sm:mb-7 lg:mb-10">
         EARNED THIS MONTH
       </p>
 
-      <div class="mx-auto mb-6 h-10 w-px bg-border sm:mb-10" />
+      <div class="mx-auto mb-4 h-8 w-px bg-border sm:mb-7 sm:h-10 lg:mb-10" />
 
-      <div class="mb-8 flex items-center justify-center gap-8 sm:mb-14 sm:gap-12">
+      <div
+        class="mb-6 flex items-center justify-center gap-6 sm:mb-10 sm:gap-10 lg:mb-14 lg:gap-12"
+      >
         <div class="flex flex-col gap-1.5">
           <span class="font-mono text-base tabular-nums tracking-[-0.01em] text-cream">
-            +${{ perSecondFormatted }}
+            +{{ selectedCurrency.symbol }}{{ perSecondFormatted }}
           </span>
           <span class="text-[0.58rem] uppercase tracking-[0.22em] text-cream-muted"
             >per second</span
