@@ -27,14 +27,20 @@ onMounted(() => {
       aria-hidden="true"
     />
 
+    <ScheduleSettings
+      class="absolute top-8 right-12 max-sm:top-[4.5rem] max-sm:right-auto max-sm:left-1/2 max-sm:-translate-x-1/2 z-50 animate-fade-in"
+    />
+
     <header class="relative z-10 animate-slide-down">
       <div class="flex flex-col items-center gap-4">
         <div class="flex items-center gap-3">
-          <span class="font-mono text-[0.68rem] font-medium tracking-[0.35em] text-gold"
+          <span
+            class="font-mono text-[0.68rem] max-sm:text-[0.6rem] font-medium tracking-[0.35em] text-gold"
             >EARNINGS</span
           >
           <span class="text-[0.5rem] text-gold-dim">·</span>
-          <span class="font-mono text-[0.68rem] font-medium tracking-[0.35em] text-gold"
+          <span
+            class="font-mono text-[0.68rem] max-sm:text-[0.6rem] font-medium tracking-[0.35em] text-gold"
             >COUNTER</span
           >
         </div>
@@ -52,7 +58,6 @@ onMounted(() => {
       class="relative z-10 w-full flex flex-col pb-4 sm:pb-8 animate-slide-up [animation-delay:0.4s]"
     >
       <SalaryInput />
-      <ScheduleSettings />
     </footer>
   </div>
 </template>
