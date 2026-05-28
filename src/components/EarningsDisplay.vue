@@ -11,7 +11,7 @@ const { monthlySalary } = storeToRefs(salaryStore)
 const currencyStore = useCurrencyStore()
 const { selectedCurrency } = storeToRefs(currencyStore)
 
-const { earnings, salaryPerSecond, daysInMonth } = useEarningsCounter(monthlySalary)
+const { earnings, salaryPerSecond, salaryPerHour, daysInMonth } = useEarningsCounter(monthlySalary)
 
 const isPulsing = ref(false)
 
@@ -44,6 +44,13 @@ const decimalPart = computed(() => {
 })
 
 const perSecondFormatted = computed(() => salaryPerSecond.value.toFixed(6))
+
+const perHourFormatted = computed(() =>
+  salaryPerHour.value.toLocaleString(selectedCurrency.value.locale, {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }),
+)
 
 const progressPercent = computed(() => {
   if (!monthlySalary.value) return 0
@@ -97,6 +104,13 @@ const hasSalary = computed(() => monthlySalary.value !== null && monthlySalary.v
       <div
         class="mb-6 flex items-center justify-center gap-6 sm:mb-10 sm:gap-10 lg:mb-14 lg:gap-12"
       >
+        <div class="flex flex-col gap-1.5">
+          <span class="font-mono text-base tabular-nums tracking-[-0.01em] text-cream">
+            +{{ selectedCurrency.symbol }}{{ perHourFormatted }}
+          </span>
+          <span class="text-[0.58rem] uppercase tracking-[0.22em] text-cream-muted">per hour</span>
+        </div>
+        <div class="h-8 w-px bg-border" />
         <div class="flex flex-col gap-1.5">
           <span class="font-mono text-base tabular-nums tracking-[-0.01em] text-cream">
             +{{ selectedCurrency.symbol }}{{ perSecondFormatted }}

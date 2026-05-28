@@ -22,7 +22,7 @@ export function getTotalSecondsInMonth(schedule?: WorkSchedule): number {
 
   if (!schedule || !schedule.isActive) {
     const totalSeconds = daysInMonth * 24 * 3600
-    
+
     return totalSeconds
   }
 
@@ -33,7 +33,7 @@ export function getTotalSecondsInMonth(schedule?: WorkSchedule): number {
 
   for (let day = 1; day <= daysInMonth; day++) {
     const date = new Date(year, month, day)
-    
+
     if (schedule.daysOfWeek.includes(date.getDay())) {
       workableSeconds += dailySeconds
     }
@@ -107,4 +107,18 @@ export function getSalaryPerSecond({
   const salaryPerSecond = monthlySalary / totalSecondsInMonth
 
   return salaryPerSecond
+}
+
+export function getSalaryPerHour({
+  monthlySalary,
+  totalSecondsInMonth,
+}: {
+  monthlySalary: number
+  totalSecondsInMonth: number
+}): number {
+  const salaryPerSecond = getSalaryPerSecond({ monthlySalary, totalSecondsInMonth })
+
+  const salaryPerHour = salaryPerSecond * 3600
+
+  return salaryPerHour
 }
