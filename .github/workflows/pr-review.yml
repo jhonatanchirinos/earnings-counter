@@ -1,4 +1,4 @@
-name: Claude PR Review
+name: AI PR Review
 
 on:
   pull_request:
@@ -24,7 +24,7 @@ jobs:
         working-directory: .github/scripts
         run: npm install
 
-      - name: Run Claude review
+      - name: Run AI review
         working-directory: .github/scripts
         run: node review-pr.mjs
         env:
