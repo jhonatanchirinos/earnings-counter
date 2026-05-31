@@ -96,5 +96,12 @@ export function useEarningsCounter(monthlySalary: Ref<number | null>) {
   onUnmounted(stopCounter)
   watch([monthlySalary, schedule, timeframe], updateEarningsState, { deep: true })
 
-  return { earnings, salaryPerSecond, salaryPerHour, daysInMonth, elapsedSeconds, totalSecondsInPeriod }
+  return {
+    earnings,
+    salaryPerSecond,
+    salaryPerHour,
+    daysInMonth,
+    elapsedSeconds,
+    totalSecondsInPeriod,
+  }
 }

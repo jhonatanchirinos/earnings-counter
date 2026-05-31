@@ -16,8 +16,14 @@ const { selectedCurrency } = storeToRefs(currencyStore)
 const timeframeStore = useTimeframeStore()
 const { timeframe } = storeToRefs(timeframeStore)
 
-const { earnings, salaryPerSecond, salaryPerHour, daysInMonth, elapsedSeconds, totalSecondsInPeriod } =
-  useEarningsCounter(monthlySalary)
+const {
+  earnings,
+  salaryPerSecond,
+  salaryPerHour,
+  daysInMonth,
+  elapsedSeconds,
+  totalSecondsInPeriod,
+} = useEarningsCounter(monthlySalary)
 
 const isPulsing = ref(false)
 
