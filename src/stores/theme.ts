@@ -1,4 +1,4 @@
-import { ref, computed, watch } from 'vue'
+import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import type { Theme } from '@/types'
 import { useThemeStorage } from '@/composables/useThemeStorage'
@@ -11,8 +11,10 @@ export const useThemeStore = defineStore('theme', () => {
 
   const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
 
+  const prefersDark = ref(mediaQuery.matches)
+
   const resolvedTheme = computed(() =>
-    resolveEffectiveTheme({ theme: theme.value, prefersDark: mediaQuery.matches }),
+    resolveEffectiveTheme({ theme: theme.value, prefersDark: prefersDark.value }),
   )
 
   function applyResolvedTheme(): void {
@@ -37,10 +39,10 @@ export const useThemeStore = defineStore('theme', () => {
     applyResolvedTheme()
   }
 
-  watch(theme, applyResolvedTheme)
-
   // Intentional: no removeEventListener — store is a global singleton for the app lifetime
-  mediaQuery.addEventListener('change', () => {
+  mediaQuery.addEventListener('change', (event) => {
+    prefersDark.value = event.matches
+
     if (theme.value === 'system') applyResolvedTheme()
   })
 
