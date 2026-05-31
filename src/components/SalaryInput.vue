@@ -99,14 +99,14 @@ const formattedSalary = computed(() => {
 </script>
 
 <template>
-  <div class="border-t border-border pt-6 sm:pt-10">
-    <div v-if="showForm" class="mx-auto max-w-[460px]">
+  <div class="border-t border-border pt-6 sm:pt-5">
+    <div v-if="showForm" class="mx-auto max-w-115">
       <div class="mb-3 flex items-center justify-between">
-        <span class="text-[0.58rem] tracking-[0.32em] text-cream-muted">MONTHLY SALARY</span>
+        <span class="text-[0.6rem] tracking-[0.32em] text-cream-muted">MONTHLY SALARY</span>
         <div class="flex items-center gap-3">
           <div ref="currencyDropdownRef" class="relative">
             <button
-              class="flex cursor-pointer items-center gap-1 font-mono text-[0.58rem] tracking-[0.2em] text-cream-muted transition-colors hover:text-cream focus:outline-none"
+              class="flex cursor-pointer items-center gap-1 font-mono text-[0.6rem] tracking-[0.2em] text-cream-muted transition-colors hover:text-cream focus:outline-none"
               @click="toggleCurrencyDropdown"
             >
               {{ selectedCurrency.code }}
@@ -114,12 +114,12 @@ const formattedSalary = computed(() => {
             </button>
             <div
               v-if="isCurrencyDropdownOpen"
-              class="absolute right-0 bottom-full mb-1.5 flex flex-col min-w-[200px] border border-border bg-bg-surface overflow-hidden"
+              class="absolute right-0 bottom-full mb-1.5 flex flex-col min-w-50 border border-border bg-bg-surface overflow-hidden"
             >
               <button
                 v-for="currency in CURRENCIES"
                 :key="currency.code"
-                class="flex w-full items-center justify-between px-3 py-1.5 text-left font-mono text-[0.58rem] tracking-[0.2em] transition-colors cursor-pointer"
+                class="flex w-full items-center justify-between px-3 py-1.5 text-left font-mono text-[0.6rem] tracking-[0.2em] transition-colors cursor-pointer"
                 :class="
                   currency.code === selectedCurrency.code
                     ? 'bg-gold text-bg'
@@ -128,13 +128,13 @@ const formattedSalary = computed(() => {
                 @click="selectCurrency(currency.code)"
               >
                 <span>{{ currency.code }}</span>
-                <span class="ml-4 truncate tracking-[0.05em] opacity-60">{{ currency.name }}</span>
+                <span class="ml-4 truncate tracking-wider opacity-60">{{ currency.name }}</span>
               </button>
             </div>
           </div>
           <button
             v-if="isEditing"
-            class="text-[0.58rem] tracking-[0.2em] text-cream-muted transition-colors hover:text-cream cursor-pointer"
+            class="text-[0.6rem] tracking-[0.2em] text-cream-muted transition-colors hover:text-cream cursor-pointer"
             @click="isEditing = false"
           >
             CANCEL
@@ -174,14 +174,14 @@ const formattedSalary = computed(() => {
       </p>
     </div>
 
-    <div v-else class="mx-auto flex max-w-[460px] flex-col items-center gap-3 sm:flex-row sm:gap-5">
-      <span class="shrink-0 text-[0.58rem] tracking-[0.32em] text-cream-muted">MONTHLY SALARY</span>
+    <div v-else class="mx-auto flex max-w-115 flex-col items-center gap-3 sm:flex-row sm:gap-5">
+      <span class="shrink-0 text-[0.6rem] tracking-[0.32em] text-cream-muted">MONTHLY SALARY</span>
       <span
         class="flex-1 whitespace-nowrap text-center font-mono text-base tabular-nums text-cream sm:text-left"
         >{{ selectedCurrency.symbol }}{{ formattedSalary }}</span
       >
       <button
-        class="shrink-0 border border-border px-3 py-1.5 font-mono text-[0.58rem] tracking-[0.22em] text-cream-muted transition-colors hover:border-gold-dim hover:text-gold cursor-pointer"
+        class="shrink-0 border border-border px-3 py-1.5 font-mono text-[0.6rem] tracking-[0.22em] text-cream-muted transition-colors hover:border-gold-dim hover:text-gold cursor-pointer"
         @click="startEdit"
       >
         EDIT

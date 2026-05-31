@@ -60,7 +60,7 @@ onMounted(() => {
     </main>
 
     <footer
-      class="relative z-10 w-full flex flex-col pb-4 sm:pb-8 animate-slide-up [animation-delay:0.4s]"
+      class="relative z-10 w-full flex flex-col pb-4 sm:pb-3 animate-slide-up [animation-delay:0.4s]"
     >
       <SalaryInput />
     </footer>
