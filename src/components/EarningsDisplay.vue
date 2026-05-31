@@ -16,8 +16,14 @@ const { selectedCurrency } = storeToRefs(currencyStore)
 const timeframeStore = useTimeframeStore()
 const { timeframe } = storeToRefs(timeframeStore)
 
-const { earnings, salaryPerSecond, salaryPerHour, daysInMonth, elapsedSeconds, totalSecondsInPeriod } =
-  useEarningsCounter(monthlySalary)
+const {
+  earnings,
+  salaryPerSecond,
+  salaryPerHour,
+  daysInMonth,
+  elapsedSeconds,
+  totalSecondsInPeriod,
+} = useEarningsCounter(monthlySalary)
 
 const isPulsing = ref(false)
 
@@ -108,6 +114,24 @@ function setTimeframe(newTimeframe: Timeframe) {
     </div>
 
     <template v-else>
+      <div class="flex justify-center my-5 sm:mb-7 lg:mt-0 lg:mb-10">
+        <div class="flex bg-bg-surface border border-border p-1 rounded-sm">
+          <button
+            v-for="timeframeOption in TIMEFRAMES"
+            :key="timeframeOption.value"
+            class="px-3 py-1 font-mono text-[0.55rem] tracking-[0.2em] transition-colors cursor-pointer sm:px-4 sm:py-1.5 sm:text-[0.6rem]"
+            :class="
+              timeframe === timeframeOption.value
+                ? 'bg-gold text-bg font-medium'
+                : 'text-cream-muted hover:text-cream hover:bg-border/50'
+            "
+            @click="setTimeframe(timeframeOption.value)"
+          >
+            {{ timeframeOption.label }}
+          </button>
+        </div>
+      </div>
+
       <div
         class="mb-2 flex flex-wrap justify-center items-start gap-1 transition-opacity duration-200 sm:mb-4 lg:mb-5"
         :class="{ 'opacity-70': isPulsing }"
@@ -133,34 +157,9 @@ function setTimeframe(newTimeframe: Timeframe) {
         {{ earnedLabel }}
       </p>
 
-      <div class="flex justify-center my-5 sm:mb-7 lg:my-10">
-        <div class="flex bg-bg-surface border border-border p-1 rounded-sm">
-          <button
-            v-for="timeframeOption in TIMEFRAMES"
-            :key="timeframeOption.value"
-            class="px-3 py-1 font-mono text-[0.55rem] tracking-[0.2em] transition-colors cursor-pointer sm:px-4 sm:py-1.5 sm:text-[0.6rem]"
-            :class="
-              timeframe === timeframeOption.value
-                ? 'bg-gold text-bg font-medium'
-                : 'text-cream-muted hover:text-cream hover:bg-border/50'
-            "
-            @click="setTimeframe(timeframeOption.value)"
-          >
-            {{ timeframeOption.label }}
-          </button>
-        </div>
-      </div>
-
       <div
         class="mb-6 flex items-center justify-center gap-6 sm:mb-10 sm:gap-10 lg:mb-14 lg:gap-12"
       >
-        <div class="flex flex-col gap-1.5">
-          <span class="font-mono text-base tabular-nums tracking-[-0.01em] text-cream">
-            +{{ selectedCurrency.symbol }}{{ perHourFormatted }}
-          </span>
-          <span class="text-[0.58rem] uppercase tracking-[0.22em] text-cream-muted">per hour</span>
-        </div>
-        <div class="h-8 w-px bg-border" />
         <div class="flex flex-col gap-1.5">
           <span class="font-mono text-base tabular-nums tracking-[-0.01em] text-cream">
             +{{ selectedCurrency.symbol }}{{ perSecondFormatted }}
@@ -172,6 +171,14 @@ function setTimeframe(newTimeframe: Timeframe) {
         <div class="h-8 w-px bg-border" />
         <div class="flex flex-col gap-1.5">
           <span class="font-mono text-base tabular-nums tracking-[-0.01em] text-cream">
+            +{{ selectedCurrency.symbol }}{{ perHourFormatted }}
+          </span>
+          <span class="text-[0.58rem] uppercase tracking-[0.22em] text-cream-muted">per hour</span>
+        </div>
+
+        <div class="h-8 w-px bg-border" />
+        <div class="flex flex-col gap-1.5">
+          <span class="font-mono text-base tabular-nums tracking-[-0.01em] text-cream">
             {{ daysInMonth }}
           </span>
           <span class="text-[0.58rem] uppercase tracking-[0.22em] text-cream-muted"
@@ -180,13 +187,13 @@ function setTimeframe(newTimeframe: Timeframe) {
         </div>
       </div>
 
-      <div class="mx-auto mb-3.5 h-px w-full max-w-[380px] overflow-hidden bg-border">
+      <div class="mx-auto mb-3.5 h-px w-full max-w-95 overflow-hidden bg-border">
         <div
           class="h-full bg-gradient-to-r from-gold-dim to-gold transition-[width] duration-[1200ms] ease-linear"
           :style="{ width: `${progressPercent}%` }"
         />
       </div>
-      <p class="text-[0.58rem] tracking-[0.18em] text-cream-muted">
+      <p class="text-[0.6rem] tracking-[0.18em] text-cream-muted">
         {{ progressPercent.toFixed(2) }}% of monthly salary
       </p>
     </template>
