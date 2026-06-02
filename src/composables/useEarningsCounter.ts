@@ -8,6 +8,7 @@ import {
   getElapsedSecondsInPeriod,
   getTotalSecondsInPeriod,
   calculateEarnings,
+  calculateYearEarnings,
   getSalaryPerSecond,
   getSalaryPerHour,
 } from '@/utils/earnings'
@@ -70,11 +71,18 @@ export function useEarningsCounter(monthlySalary: Ref<number | null>) {
     })
 
     if (monthlySalary.value) {
-      earnings.value = calculateEarnings({
-        monthlySalary: monthlySalary.value,
-        elapsedSeconds: elapsedSeconds.value,
-        totalSecondsInMonth: totalSecondsInMonth.value,
-      })
+      if (timeframe.value === 'year') {
+        earnings.value = calculateYearEarnings({
+          monthlySalary: monthlySalary.value,
+          schedule: schedule.value,
+        })
+      } else {
+        earnings.value = calculateEarnings({
+          monthlySalary: monthlySalary.value,
+          elapsedSeconds: elapsedSeconds.value,
+          totalSecondsInMonth: totalSecondsInMonth.value,
+        })
+      }
     }
   }
 
