@@ -165,6 +165,34 @@ export function getSalaryPerSecond({
   return salaryPerSecond
 }
 
+export function calculateYearEarnings({
+  monthlySalary,
+  schedule,
+}: {
+  monthlySalary: number
+  schedule?: WorkSchedule
+}): number {
+  if (monthlySalary <= 0) return 0
+
+  const now = new Date()
+  const completedMonths = now.getMonth()
+
+  const completedMonthsEarnings = completedMonths * monthlySalary
+
+  const totalSecondsCurrentMonth = getTotalSecondsInPeriod({ timeframe: 'month', schedule })
+  const elapsedSecondsCurrentMonth = getElapsedSecondsInPeriod({ timeframe: 'month', schedule })
+
+  const currentMonthEarnings = calculateEarnings({
+    monthlySalary,
+    elapsedSeconds: elapsedSecondsCurrentMonth,
+    totalSecondsInMonth: totalSecondsCurrentMonth,
+  })
+
+  const yearEarnings = completedMonthsEarnings + currentMonthEarnings
+
+  return yearEarnings
+}
+
 export function getSalaryPerHour({
   monthlySalary,
   totalSecondsInMonth,
