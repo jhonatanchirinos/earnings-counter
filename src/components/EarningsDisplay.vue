@@ -78,11 +78,11 @@ const progressPercent = computed(() => {
 
 const hasSalary = computed(() => monthlySalary.value !== null && monthlySalary.value > 0)
 
-const TIMEFRAMES: { value: Timeframe; label: string }[] = [
-  { value: 'today', label: 'TODAY' },
-  { value: 'week', label: 'THIS WEEK' },
-  { value: 'month', label: 'THIS MONTH' },
-  { value: 'year', label: 'THIS YEAR' },
+const TIMEFRAMES: { value: Timeframe; label: string; shortLabel: string }[] = [
+  { value: 'today', label: 'TODAY', shortLabel: 'TODAY' },
+  { value: 'week', label: 'THIS WEEK', shortLabel: 'WEEK' },
+  { value: 'month', label: 'THIS MONTH', shortLabel: 'MONTH' },
+  { value: 'year', label: 'THIS YEAR', shortLabel: 'YEAR' },
 ]
 
 const earnedLabel = computed(() => {
@@ -127,7 +127,8 @@ function setTimeframe(newTimeframe: Timeframe) {
             "
             @click="setTimeframe(timeframeOption.value)"
           >
-            {{ timeframeOption.label }}
+            <span class="sm:hidden">{{ timeframeOption.shortLabel }}</span
+            ><span class="hidden sm:inline">{{ timeframeOption.label }}</span>
           </button>
         </div>
       </div>
@@ -158,10 +159,10 @@ function setTimeframe(newTimeframe: Timeframe) {
       </p>
 
       <div
-        class="mb-6 flex items-center justify-center gap-6 sm:mb-10 sm:gap-10 lg:mb-14 lg:gap-12"
+        class="mb-6 flex items-center justify-center gap-3 sm:mb-10 sm:gap-10 lg:mb-14 lg:gap-12"
       >
         <div class="flex flex-col gap-1.5">
-          <span class="font-mono text-base tabular-nums tracking-[-0.01em] text-cream">
+          <span class="font-mono text-sm sm:text-base tabular-nums tracking-[-0.01em] text-cream">
             +{{ selectedCurrency.symbol }}{{ perSecondFormatted }}
           </span>
           <span class="text-[0.58rem] uppercase tracking-[0.22em] text-cream-muted"
@@ -170,7 +171,7 @@ function setTimeframe(newTimeframe: Timeframe) {
         </div>
         <div class="h-8 w-px bg-border" />
         <div class="flex flex-col gap-1.5">
-          <span class="font-mono text-base tabular-nums tracking-[-0.01em] text-cream">
+          <span class="font-mono text-sm sm:text-base tabular-nums tracking-[-0.01em] text-cream">
             +{{ selectedCurrency.symbol }}{{ perHourFormatted }}
           </span>
           <span class="text-[0.58rem] uppercase tracking-[0.22em] text-cream-muted">per hour</span>
@@ -178,11 +179,12 @@ function setTimeframe(newTimeframe: Timeframe) {
 
         <div class="h-8 w-px bg-border" />
         <div class="flex flex-col gap-1.5">
-          <span class="font-mono text-base tabular-nums tracking-[-0.01em] text-cream">
+          <span class="font-mono text-sm sm:text-base tabular-nums tracking-[-0.01em] text-cream">
             {{ daysInMonth }}
           </span>
           <span class="text-[0.58rem] uppercase tracking-[0.22em] text-cream-muted"
-            >days this month</span
+            ><span class="sm:hidden">this mo</span
+            ><span class="hidden sm:inline">days this month</span></span
           >
         </div>
       </div>
