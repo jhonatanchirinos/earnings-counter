@@ -66,7 +66,10 @@ function updateTime(field: 'startTime' | 'endTime', event: Event): void {
       "
       @click="isEditing = !isEditing"
     >
-      <span class="opacity-80">SCHEDULE:</span> {{ schedule.isActive ? 'ON' : 'OFF' }}
+      <span class="opacity-80"
+        ><span class="hidden sm:inline">SCHEDULE</span><span class="sm:hidden">SCHED</span>:</span
+      >
+      {{ schedule.isActive ? 'ON' : 'OFF' }}
     </button>
 
     <!-- Popup editable floating menu -->

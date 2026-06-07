@@ -35,14 +35,14 @@ onMounted(() => {
       <div class="flex items-center justify-between gap-4">
         <ThemeToggle />
 
-        <div class="flex items-center gap-3">
+        <div class="flex flex-col items-center gap-0.5 sm:flex-row sm:gap-3">
           <span
-            class="font-mono text-[0.68rem] max-sm:text-[0.6rem] font-medium tracking-[0.35em] text-gold"
+            class="font-mono text-[0.82rem] max-sm:text-[0.6rem] font-medium tracking-[0.35em] max-sm:tracking-[0.15em] text-gold"
             >EARNINGS</span
           >
-          <span class="text-[0.5rem] text-gold-dim">·</span>
+          <span class="hidden sm:inline text-[0.5rem] text-gold-dim">·</span>
           <span
-            class="font-mono text-[0.68rem] max-sm:text-[0.6rem] font-medium tracking-[0.35em] text-gold"
+            class="font-mono text-[0.82rem] max-sm:text-[0.6rem] font-medium tracking-[0.35em] max-sm:tracking-[0.15em] text-gold"
             >COUNTER</span
           >
         </div>
