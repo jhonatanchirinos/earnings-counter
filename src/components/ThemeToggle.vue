@@ -55,7 +55,7 @@ onUnmounted(() => {
       :aria-expanded="isOpen"
       aria-haspopup="listbox"
       aria-label="Theme"
-      class="inline-flex items-center justify-between gap-1.5 w-[135px] bg-bg-surface border border-border rounded px-2 py-1 text-xs font-mono text-cream-muted hover:text-gold hover:border-gold transition-colors cursor-pointer focus:outline-none focus:border-gold"
+      class="inline-flex items-center gap-1.5 bg-bg-surface border border-border rounded px-2 py-1 text-xs font-mono text-cream-muted hover:text-gold hover:border-gold transition-colors cursor-pointer focus:outline-none focus:border-gold"
       @click="toggleDropdown"
     >
       <!-- Moon icon — dark -->
@@ -110,7 +110,7 @@ onUnmounted(() => {
         <path d="M8 21h8M12 17v4" />
       </svg>
 
-      <span>{{ theme.charAt(0).toUpperCase() + theme.slice(1) }}</span>
+      <span class="hidden sm:inline">{{ theme.charAt(0).toUpperCase() + theme.slice(1) }}</span>
 
       <!-- Chevron -->
       <svg
@@ -133,7 +133,7 @@ onUnmounted(() => {
     <ul
       v-if="isOpen"
       role="listbox"
-      class="absolute right-0 mt-1 w-full bg-bg-surface border border-border rounded overflow-hidden z-50 animate-slide-down"
+      class="absolute left-0 mt-1 min-w-full w-max bg-bg-surface border border-border rounded overflow-hidden z-50 animate-slide-down"
     >
       <li
         v-for="option in THEME_OPTIONS"
