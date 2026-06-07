@@ -20,7 +20,7 @@ export const CURRENCIES: Currency[] = [
 
 export const useCurrencyStore = defineStore('currency', () => {
   const { saveCurrency, loadCurrency } = useCurrencyStorage()
-  const selectedCurrency = ref<Currency>(CURRENCIES[0])
+  const selectedCurrency = ref<Currency>(CURRENCIES[4])
 
   function setCurrency(code: string): void {
     const matchedCurrency = CURRENCIES.find((currency) => currency.code === code)
