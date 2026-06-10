@@ -8,6 +8,7 @@ import EarningsDisplay from '@/components/EarningsDisplay.vue'
 import SalaryInput from '@/components/SalaryInput.vue'
 import ScheduleSettings from '@/components/ScheduleSettings.vue'
 import ThemeToggle from '@/components/ThemeToggle.vue'
+import PipToggle from '@/components/PipToggle.vue'
 
 const salaryStore = useSalaryStore()
 const currencyStore = useCurrencyStore()
@@ -47,7 +48,10 @@ onMounted(() => {
           >
         </div>
 
-        <ScheduleSettings />
+        <div class="flex items-center gap-3 sm:gap-4">
+          <PipToggle />
+          <ScheduleSettings />
+        </div>
       </div>
 
       <div class="mt-4 h-px bg-linear-to-r from-gold-dim to-transparent" />
