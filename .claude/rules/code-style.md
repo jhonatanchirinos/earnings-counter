@@ -1,11 +1,30 @@
 # Code Style
 
+## Comments
+
+No comments by default. Add one only when the WHY is non-obvious: a hidden constraint, a subtle invariant, a workaround for a specific bug, or behavior that would surprise a reader.
+
+**Section comments** — allowed when a function has 3+ conceptually distinct phases. The comment describes the intent of the block, not what the code does. Capitalize the first letter. Place it on the line immediately before the block with no blank line between the comment and the code it introduces.
+
+```ts
+// Copy host styles so the pip window inherits the app's visual design
+document.querySelectorAll('link[rel="stylesheet"]').forEach((link) => { ... })
+
+// Sync theme class with the main window
+pipWindow.document.documentElement.classList.add(resolvedTheme.value)
+
+// Mount the pip widget into the pip window
+const container = pipWindow.document.createElement('div')
+```
+
+Never describe WHAT the code does. Never reference the current task, fix, or callers.
+
 ## Function Body Spacing
 
 Blank line between statements of different kinds (call vs assignment vs conditional vs `return`). Exceptions — group without blank line:
 
 - Consecutive `const`/`let` declarations forming a single logical setup
-- Consecutive state assignments forming one conceptual group (e.g. resetting multiple fields)
+- Consecutive statements operating on the same subject (e.g. call + nullify the same variable) stay together; blank line between different subjects
 - Single-statement bodies
 
 In tests: blank line before `expect` when setup lines precede it; consecutive `expect` calls on the same subject stay grouped.
@@ -35,6 +54,29 @@ function stopCounter(): void {
 
     intervalId = null // assignment — different type
   }
+}
+
+// correct — grouped by subject, blank line between subjects
+function teardown(): void {
+  watcher?.stop()
+  watcher = null
+
+  service?.dispose()
+  service = null
+
+  isActive = false
+
+  connection = null
+}
+
+// wrong — no subject grouping
+function teardown(): void {
+  watcher?.stop()
+  watcher = null
+  service?.dispose()
+  service = null
+  isActive = false
+  connection = null
 }
 
 // correct — tests
