@@ -24,7 +24,7 @@ onMounted(() => {
 
 <template>
   <div
-    class="relative mx-auto grid min-h-screen w-full max-w-4xl grid-rows-[auto_1fr_auto] overflow-hidden px-12 py-6 max-sm:px-5 max-sm:py-6"
+    class="relative mx-auto grid min-h-screen w-full max-w-4xl grid-rows-[auto_1fr_auto] overflow-hidden px-12 py-4 max-sm:px-5"
   >
     <div
       class="grain-bg fixed inset-0 z-0 pointer-events-none opacity-[0.035]"
@@ -59,9 +59,7 @@ onMounted(() => {
       <EarningsDisplay />
     </main>
 
-    <footer
-      class="relative z-10 w-full flex flex-col pb-4 sm:pb-3 animate-slide-up [animation-delay:0.4s]"
-    >
+    <footer class="relative z-10 w-full flex flex-col animate-slide-up [animation-delay:0.4s]">
       <SalaryInput />
     </footer>
   </div>
