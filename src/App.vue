@@ -25,7 +25,7 @@ onMounted(() => {
 
 <template>
   <div
-    class="relative mx-auto grid min-h-screen w-full max-w-4xl grid-rows-[auto_1fr_auto] overflow-hidden px-12 py-4 max-sm:px-5"
+    class="relative mx-auto grid min-h-dvh w-full max-w-4xl grid-rows-[auto_1fr_auto] overflow-hidden px-12 py-4 max-sm:px-5"
   >
     <div
       class="grain-bg fixed inset-0 z-0 pointer-events-none opacity-[0.035]"
