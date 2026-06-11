@@ -19,6 +19,10 @@ npm install
 npm run dev
 ```
 
+## Deployment
+
+Deployed on Vercel. The `engines.node` field in `package.json` pins the Node.js version — Vercel uses it to match the local environment. Do not remove it.
+
 ## Scripts
 
 - `npm run dev` — dev server
