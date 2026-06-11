@@ -2,22 +2,13 @@
 
 Live counter showing how much you've earned this month based on your monthly salary.
 
-## Development (recommended)
+## Development
 
 ```bash
 docker compose up
 ```
 
 Open http://localhost:5173.
-
-### Without Docker
-
-Requires Node 24 installed locally.
-
-```bash
-npm install
-npm run dev
-```
 
 ## Deployment
 
